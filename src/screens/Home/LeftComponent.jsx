@@ -57,7 +57,7 @@ const LeftComponent = () => {
             <Logo src={logo} alt="" />
             <MainHeading>Code Deck</MainHeading>
             <SubHeading>Code. Compile. Develop.</SubHeading>
-            <AddPlayground> <span>+</span> Create New PlayGround</AddPlayground>
+            <AddPlayground > <span>+</span> Create New PlayGround</AddPlayground>
         </ContentContainer>
     </StyledLeftComponent>
   )

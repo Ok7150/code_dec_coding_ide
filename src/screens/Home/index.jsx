@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import LeftComponent from './LeftComponent'
 import RightComponent from './RightComponent'
@@ -10,12 +10,12 @@ const StyledHome = styled.div`
 `
 
 const Home = () => {
-  const isOpenModal = false;
+  const [isOpenModal, setIsOpenModal] = useState(true)
   return (
     <StyledHome>
       <LeftComponent />
       <RightComponent />
-      { isOpenModal && <Modal />}
+      { isOpenModal && <Modal/>}
     </StyledHome>
   )
 }

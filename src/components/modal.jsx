@@ -39,7 +39,7 @@ export const Heading = styled.h3`
 `
 
 const Modal = () => {
-  const type = 3;
+  const type = 3 ;
 
   // ModalTypes
   // 1: New Folder
