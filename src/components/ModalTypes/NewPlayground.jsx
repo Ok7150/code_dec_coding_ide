@@ -1,65 +1,74 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import { Header, CloseButton } from '../Modal'
 import { IoCloseSharp } from 'react-icons/io5'
-import styled from 'styled-components'
+import { ModalContext } from '../../context/ModalContext'
+import { PlaygroundContext } from '../../context/PlaygroundContext'
+import Select from 'react-select';
+import styled from 'styled-components';
+const InputWithSelect = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  align-items: center;
 
-const Modal = styled.div`
-  padding: 0 1.5rem;
-`
+  input {
+    flex-grow: 1;
+    height: 2rem;
+  }
 
-
-const Header = styled.div`
-  padding: 1rem 0.5rem;
-  display: flex;
-  gap: 5rem;
-`
-
-const Heading = styled.h2`
-`
-
-const Footer = styled.div`
-  margin-top:.25rem;
-  padding: 1rem .5rem;
-`
-const Input = styled.input`
-  padding: .25rem;
-  border-radius:5px;
-`
-
-const Select = styled.select`
-  padding: .25rem;
-  border-radius:5px;
-`
-const Button = styled.button`
-  padding: .25rem;
-  margin-top: 1rem;
-  border-radius:5px;
-  color: white;
-  background-color: #343030;
-  cursor: pointer;
-` 
-
+  button {
+    background: #241f21;
+    height: 2rem;
+    color: white;
+    padding: 0 2rem;
+  }
+`;
 
 const NewPlayground = () => {
+  const { isOpenModal, closeModal } = useContext(ModalContext);
+  const { addPlayground } = useContext(PlaygroundContext);
+
+  const languageOptions = [
+    { value: "c++", label: "C++" },
+    { value: "java", label: "Java" },
+    { value: "javascript", label: "JavaScript" },
+    { value: "python", label: "Python" },
+  ];
+
+  const {folderId} = isOpenModal.identifiers;
+  const [cardTitle, setCardTitle] = useState("");
+  const [language, setLanguage] = useState(languageOptions[0]);
+
+  const handleLanguageChange = (selectedOption) => {
+    setLanguage(selectedOption);
+  };
+
   return (
-    <Modal>
+    <>
       <Header>
-        <Heading>Create New Playground</Heading>
-        <IoCloseSharp />
+        <h2>Create New Playground</h2>
+        <CloseButton onClick={() => closeModal()}>
+          <IoCloseSharp />
+        </CloseButton>
       </Header>
-      <Footer>
-        <p>
-          <Input type="text" />
-          <Select name="" id="">
-            <option value="c++">C++</option>
-            <option value="java">Java</option>
-            <option value="javascript">Javascript</option>
-            <option value="python">Python</option>
-          </Select>
-        </p>
-        <Button>Create Playground</Button>
-      </Footer>
-    </Modal>
-  );
+      <InputWithSelect>
+        <input
+          type='text'
+          onChange={(e) => setCardTitle(e.target.value)}
+        />
+        <Select
+          options={languageOptions}
+          value={language}
+          onChange={handleLanguageChange}
+        />
+        <button onClick={() => {
+          addPlayground(folderId, cardTitle, language.label)
+          closeModal();
+        }}> Create Playground </button>
+      </InputWithSelect>
+    </>
+  )
 }
 
 export default NewPlayground
