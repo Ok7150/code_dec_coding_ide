@@ -1,30 +1,74 @@
 import React, { useContext, useState } from 'react'
-import { Header, CloseButton, Input } from '../Modal'
+import { Header, CloseButton } from '../Modal'
 import { IoCloseSharp } from 'react-icons/io5'
 import { ModalContext } from '../../context/ModalContext'
 import { PlaygroundContext } from '../../context/PlaygroundContext'
-const NewFolder = () => {
-  const { closeModal } = useContext(ModalContext);
-  const { addFolder } = useContext(PlaygroundContext)
-  const [folderTitle, setFolderTitle] = useState("");
+import Select from 'react-select';
+import styled from 'styled-components';
+const InputWithSelect = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  align-items: center;
+
+  input {
+    flex-grow: 1;
+    height: 2rem;
+  }
+
+  button {
+    background: #241f21;
+    height: 2rem;
+    color: white;
+    padding: 0 2rem;
+  }
+`;
+
+const NewPlayground = () => {
+  const { isOpenModal, closeModal } = useContext(ModalContext);
+  const { addPlayground } = useContext(PlaygroundContext);
+
+  const languageOptions = [
+    { value: "cpp", label: "cpp" },
+    { value: "java", label: "java" },
+    { value: "javascript", label: "javascript" },
+    { value: "python", label: "python" },
+  ];
+
+  const {folderId} = isOpenModal.identifiers;
+  const [cardTitle, setCardTitle] = useState("");
+  const [language, setLanguage] = useState(languageOptions[0]);
+
+  const handleLanguageChange = (selectedOption) => {
+    setLanguage(selectedOption);
+  };
 
   return (
     <>
       <Header>
-        <h2>Create New Folder</h2>
+        <h2>Create New Playground</h2>
         <CloseButton onClick={() => closeModal()}>
           <IoCloseSharp />
         </CloseButton>
       </Header>
-      <Input>
-        <input type="text" onChange={(e) => setFolderTitle(e.target.value)} />
+      <InputWithSelect>
+        <input
+          type='text'
+          onChange={(e) => setCardTitle(e.target.value)}
+        />
+        <Select
+          options={languageOptions}
+          value={language}
+          onChange={handleLanguageChange}
+        />
         <button onClick={() => {
-          addFolder(folderTitle)
-          closeModal()
-        }}>Create Folder</button>
-      </Input>
+          addPlayground(folderId, cardTitle, language.label)
+          closeModal();
+        }}> Create Playground </button>
+      </InputWithSelect>
     </>
   )
 }
 
-export default NewFolder
+export default NewPlayground
